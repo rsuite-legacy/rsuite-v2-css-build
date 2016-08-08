@@ -1,0 +1,24 @@
+{
+  "name": "rsuite-css-build",
+  "version": "1.0.0",
+  "description": "ruite css build",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rsuite/rsuite-css-build.git"
+  },
+  "keywords": [
+    "css-tool",
+    "rsuite",
+    "css-build"
+  ],
+  "author": "Godefery",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rsuite/rsuite-css-build/issues"
+  },
+  "homepage": "https://github.com/rsuite/rsuite-css-build#readme"
+}
