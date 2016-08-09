@@ -38,3 +38,6 @@ jspm_packages
 
 # IDE Cache
 .idea
+
+# Custom
+/.cache/
