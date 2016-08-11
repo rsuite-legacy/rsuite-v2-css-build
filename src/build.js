@@ -102,7 +102,7 @@ function getFontFiles() {
                 var writer = fs.createWriteStream(`${locationPath}/${fileName}`);
                 res.pipe(writer);
                 writer.on('finish', function() {
-                    console.log(`下载成功:${fileName}`);
+                    //console.log(`下载成功:${fileName}`);
                 });
             });
         })
