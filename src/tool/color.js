@@ -22,7 +22,6 @@ module.exports.computeColors = function(baseColor) {
  */
 module.exports.lessComputeColors = function(baseColor) {
     var levels = [5, 10, 17];
-    // console.log(darkenColor(baseColor, 10));
     return levels.map((level)=>darkenColor(baseColor, level));
 }
 

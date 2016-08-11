@@ -21,7 +21,8 @@
     "url": "https://github.com/rsuite/rsuite-css-build/issues"
   },
   "homepage": "https://github.com/rsuite/rsuite-css-build#readme",
-  "devDependencies": {
+  "dependencies": {
+    "colors": "^1.1.2",
     "extend": "^3.0.0",
     "less": "^2.7.1",
     "superagent": "^2.1.0"
