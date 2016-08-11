@@ -28,11 +28,11 @@ var outputPath = '';
  */
 function build(option) {
     var _option = {
-        url: CONFIG.domain + CONFIG.path + '/rsuite.min.css',
+        url: CONFIG.domain + CONFIG.path,
         oldColor: '#00bcd4',
         color: '#00bcd4'
     };
-    extend(_option, option);
+    CONFIG.option = extend(_option, option);
 
     try {
         outputPath = option.output;
@@ -44,7 +44,7 @@ function build(option) {
         return;
     }
 
-    getOriginalData(_option.url, (data)=> {
+    getOriginalData(_option.url + '/rsuite.min.css', (data)=> {
         var oldColors = color.calcColors(_option.oldColor);
         var colors = color.calcColors(_option.color);
         oldColors.forEach((color, index)=> {
@@ -84,7 +84,7 @@ function writeData2Cache(data) {
             return;
         }
 
-        console.log("生成成功");
+        console.log("生成成功".green);
     });
 }
 
@@ -93,7 +93,7 @@ function writeData2Cache(data) {
  */
 function getFontFiles() {
     var locationPath = [outputPath, '/fonts'].join(path.sep);
-    var serverPath = CONFIG.domain + CONFIG.path + '/fonts';
+    var serverPath = CONFIG.option.url + '/fonts';
     var fileNames = ['fontawesome-webfont.eot', 'fontawesome-webfont.svg', 'fontawesome-webfont.ttf', 'fontawesome-webfont.woff', 'fontawesome-webfont.woff2', 'FontAwesome.otf', 'icomoon.eot', 'icomoon.svg', 'icomoon.ttf', 'icomoon.woff']
     fileTool.mkdirs(locationPath, ()=> {
         fileNames.forEach((fileName)=> {
@@ -101,9 +101,9 @@ function getFontFiles() {
                 // console.log(`开始下载:${fileName}`);
                 var writer = fs.createWriteStream(`${locationPath}/${fileName}`);
                 res.pipe(writer);
-                writer.on('finish', function() {
-                    //console.log(`下载成功:${fileName}`);
-                });
+                // writer.on('finish', function() {
+                //     console.log(`下载成功:${fileName}`);
+                // });
             });
         })
     });
