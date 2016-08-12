@@ -19,7 +19,7 @@ npm install rsuite-css-build
 ### Usage examples
 
 ```javascript
-var build = require('./main');
+var build = require('rsuite-css-build');
 build({
     color: '#1b9451',
     output: 'rsuite/css'
