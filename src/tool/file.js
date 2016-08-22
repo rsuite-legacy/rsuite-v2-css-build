@@ -27,6 +27,25 @@ function getFileText(filePath, call) {
 }
 
 /**
+ * 获取文件数据
+ * @param filePath
+ * @param call
+ */
+function getFileData(filePath, call) {
+    if (isWebPath(filePath)) {
+        request.get(filePath).end(function(err, res) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            if (util.isFunction(call)) {
+                call(res.body);
+            }
+        });
+    }
+}
+
+/**
  * 获取网络文件
  * @param filePath
  * @param call
@@ -76,6 +95,7 @@ function mkdirs(dirpath, callback) {
 
 var file = {
     getFileText: getFileText,
+    getFileData: getFileData,
     getWebFile: getWebFile,
     mkdirs: mkdirs
 };
