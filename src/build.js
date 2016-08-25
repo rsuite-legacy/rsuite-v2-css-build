@@ -126,7 +126,7 @@ function Main() {
                 console.log("生成失败:" + err.red);
                 return;
             }
-            console.log(`[${T.count}] ${fileName} 【成功】`.green);
+            console.log(`[${T.count}] ${fileName}`+ '【成功】'.green);
         });
     }
 
@@ -188,8 +188,7 @@ function Main() {
                     }
                     else {
                         fileTool.getWebFile(fileUrl, function(res) {
-                            var writer = fs.createWriteStream(fileLocationFullPath);
-                            res.pipe(writer);
+                            res.pipe(fs.createWriteStream(fileLocationFullPath));
                             fileDefer.resolve();
                         });
                     }
@@ -202,7 +201,7 @@ function Main() {
         });
 
         promisesResolve(defferds, ()=> {
-            console.log(`[${T.count}] 文件拉取 【成功】`.green);
+            console.log(`[${T.count}] 文件拉取 ` + '【成功】'.green);
         });
     }
 

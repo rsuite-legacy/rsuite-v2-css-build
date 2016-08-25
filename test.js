@@ -6,7 +6,7 @@ var outPutDir = 'rsuite/css';
 
 //拉取操作
 rsuiteCssBuild.pull({
-    output: outPutDir+'/pull',
+    output: outPutDir,
     targets: ['fonts', 'css']
 });
 //输出css

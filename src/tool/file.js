@@ -4,6 +4,7 @@
 var request = require('superagent');
 var path = require('path');
 var util = require('util');
+var http = require('http');
 var fs = require('fs');
 /**
  * 获取文件文本
@@ -52,17 +53,11 @@ function getFileData(filePath, call) {
  */
 function getWebFile(filePath, call) {
     if (isWebPath(filePath)) {
-        request
-            .get(filePath)
-            .end(function(err, res) {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                if (util.isFunction(call)) {
-                    call(res);
-                }
-            });
+        http.get(filePath, function(res) {
+            if (util.isFunction(call)) {
+                call(res);
+            }
+        });
     }
 }
 
