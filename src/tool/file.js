@@ -88,11 +88,9 @@ function mkdirs(dirpath, callback) {
     });
 }
 
-var file = {
-    getFileText: getFileText,
-    getFileData: getFileData,
-    getWebFile: getWebFile,
-    mkdirs: mkdirs
+module.exports = {
+    getFileText,
+    getFileData,
+    getWebFile,
+    mkdirs
 };
-
-module.exports = file;
