@@ -10,8 +10,6 @@ var util = require('util');
 var fileTool = require('./tool/file');
 var color = require('./tool/color');
 
-var count = 0;
-
 /**
  *
  * @constructor
@@ -21,7 +19,17 @@ function Main() {
 
     T.CONFIG = {
         domain: 'http://t.hypers.com.cn/',
-        path: 'libs/rsuite/css/0.1.0/'
+        path: 'libs/rsuite/css/0.1.0/',
+        fileList: {
+            fonts: {
+                path: 'fonts/',
+                files: ['fontawesome-webfont.eot', 'fontawesome-webfont.svg', 'fontawesome-webfont.ttf', 'fontawesome-webfont.woff', 'fontawesome-webfont.woff2', 'FontAwesome.otf', 'icomoon.eot', 'icomoon.svg', 'icomoon.ttf', 'icomoon.woff']
+            },
+            css: {
+                path: '',
+                files: ['rsuite.min.css', 'loading.min.css']
+            }
+        }
     };
 
     //缓存路径
@@ -32,7 +40,6 @@ function Main() {
      * @param option
      */
     function init(option) {
-        T.count = ++count;
         var _option = {
             url: T.CONFIG.domain + T.CONFIG.path,
             oldColor: '#00bcd4',
@@ -62,18 +69,28 @@ function Main() {
      * @param {String} [option.alias] - 输出文件名(无需后缀名)
      */
     function transform(option) {
-
         init(option);
 
-        getOriginalData(T.CONFIG.option.url + '/rsuite.min.css', (data)=> {
-            var oldColors = color.calcColors(T.CONFIG.option.oldColor);
-            var colors = color.calcColors(T.CONFIG.option.color);
-            oldColors.forEach((color, index)=> {
-                data = data.replace(new RegExp(color, 'g'), colors[index]);
-            });
+        T.CONFIG.fileList.css.files.forEach((fileName)=> {
+            getOriginalData([T.CONFIG.option.url, fileName].join(path.sep), (data)=> {
+                var oldColors = color.calcColors(T.CONFIG.option.oldColor);
+                var colors = color.calcColors(T.CONFIG.option.color);
+                oldColors.forEach((color, index)=> {
+                    data = data.replace(new RegExp(color, 'g'), colors[index]);
+                });
 
-            mkCacheDir(()=> {
-                writeData2Dir(data);
+                mkCacheDir(()=> {
+                    var alias = T.CONFIG.option.alias || 'rsuite.min';
+                    var ext = path.extname(fileName);
+                    if (alias === 'rsuite.min') {
+                        fileName = fileName;
+                    } else {
+
+                        fileName = fileName === 'rsuite.min.css' ? `${alias}${ext}` : `${alias}.${fileName}`;
+                    }
+                    fileName = path.normalize([T.outputPath, fileName].join(path.sep));
+                    writeData2Dir(fileName, data);
+                });
             });
         });
     }
@@ -118,15 +135,13 @@ function Main() {
     /**
      * 将数据写入输出目录
      */
-    function writeData2Dir(data) {
-        var fileName = (T.CONFIG.option.alias || 'rsuite.min') + '.css';
-        fileName = path.normalize([T.outputPath, fileName].join(path.sep));
-        fs.writeFile(fileName, data, (err)=> {
+    function writeData2Dir(filePath, data) {
+        fs.writeFile(filePath, data, (err)=> {
             if (err) {
                 console.log("生成失败:" + err.red);
                 return;
             }
-            console.log(`[${T.count}] ${fileName}`+ '【成功】'.green);
+            console.log(`${filePath}` + '【成功】'.green);
         });
     }
 
@@ -136,16 +151,7 @@ function Main() {
      * @param {fonts|css} targets
      */
     function getOriginalFiles(targets) {
-        var fileNames = {
-            fonts: {
-                path: 'fonts/',
-                files: ['fontawesome-webfont.eot', 'fontawesome-webfont.svg', 'fontawesome-webfont.ttf', 'fontawesome-webfont.woff', 'fontawesome-webfont.woff2', 'FontAwesome.otf', 'icomoon.eot', 'icomoon.svg', 'icomoon.ttf', 'icomoon.woff']
-            },
-            css: {
-                path: '',
-                files: ['rsuite.min.css']
-            }
-        };
+        var fileNames = T.CONFIG.fileList;
 
         var defferds = [];
 
@@ -201,7 +207,7 @@ function Main() {
         });
 
         promisesResolve(defferds, ()=> {
-            console.log(`[${T.count}] 文件拉取 ` + '【成功】'.green);
+            console.log(`[${targets.join(',')}]拉取 ` + '【成功】'.green);
         });
     }
 

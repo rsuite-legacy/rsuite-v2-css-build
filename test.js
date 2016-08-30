@@ -18,5 +18,5 @@ rsuiteCssBuild.transform({
 rsuiteCssBuild.transform({
     color: '#1b9451',
     output: outPutDir,
-    alias: 'test2'
+    alias: 'green'
 });
